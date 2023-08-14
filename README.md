@@ -27,7 +27,7 @@ However, if the snake intersects with itself, the game restarts from the beginni
     npm run dev
 
 ## Technologies used:
-  HTML | CSS| TypeScript | vite | Three.js
+  HTML | CSS| JavaScript |TypeScript | vite | Three.js
 
 ## Author
   Bondarenko Dmytro
