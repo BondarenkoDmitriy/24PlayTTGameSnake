@@ -7,6 +7,11 @@ const height = 480;
 let points = 0;
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
+const pointsCounter = document.querySelector<HTMLDivElement>('#points')!;
+
+function updatePoints() {
+  pointsCounter.innerHTML = `Points: ${points}`;
+}
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, width / height, 0.1, 1000 );
@@ -166,6 +171,7 @@ camera.position.z = 10;
 function update() {
   snake.update();
   apple.collistion();
+  updatePoints();
   setTimeout(update, 250);
 }
 update();
