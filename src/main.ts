@@ -1,4 +1,4 @@
-import './style.css'
+import './style.css';
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
@@ -28,8 +28,6 @@ function genCube(x: number, y: number) {
   return cube;
 }
 
-// genCube(0, 0);
-
 class Snake {
   x: number; 
   y: number; 
@@ -41,7 +39,6 @@ class Snake {
     this.x = x;
     this.y = y;
     this.head = genCube(x, y);
-
     for (let i = 1; i < 5; i++) {
       this.children.push(genCube(0, -i));
       this.lastPosition.push([0, -i])
@@ -60,9 +57,24 @@ class Snake {
 
   move() {
     this.lastPosition.push([this.x, this.y])
+
+    if (this.x < -10 || this.x > 10) {
+      this.x = -this.x;
+    }
+
+    if (this.y < -10 || this.y > 10) {
+      this.y = -this.y;
+    }
+
     this.x += this.direction[0];
     this.y += this.direction[1];
-    this.head.position.set(this.x, this.y, 0);
+    this.head.position.set(this.x, this.y, 0)
+
+    if (this.lastPosition.length > this.children.length + 2) {
+      this.lastPosition.shift()
+    }
+
+    this.moveChildren();
   }
 
   update() {
@@ -72,8 +84,37 @@ class Snake {
 
 let snake: Snake;
 
+class Apple {
+  x: number = 3;
+  y: number = 0;
+  apple: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial>
+  constructor(x: number, y: number) {
+    this.apple = genCube(x, y);
+    this.apple.material = new THREE.MeshBasicMaterial({color: 0xff0000})
+    this.x = x
+    this.y = y
+  }
+
+  static genRandomApple() {
+    const rint = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min;
+
+    return new Apple(rint(-5, 5), rint(-5, 5))
+  }
+
+  collistion() {
+    if (this.x === snake.x && this.y === snake.y) {
+      scene.remove(this.apple);
+      apple = Apple.genRandomApple();
+    }
+  }
+}
+
+let apple: Apple;
+
 function init() {
+  scene.clear()
   snake = new Snake(0, 0);
+  apple = Apple.genRandomApple()
 }
 
 init();
@@ -82,18 +123,20 @@ camera.position.z = 10;
 
 function update() {
   snake.update();
-  setTimeout(update, 250)
+  apple.collistion();
+  setTimeout(update, 250);
 }
-
 update();
 
-function animation() {
-  requestAnimationFrame( animation );
+function animate() {
+	requestAnimationFrame( animate );
+
   controls.update();
-  renderer.render( scene, camera );
+
+	renderer.render( scene, camera );
 }
 
-animation();
+animate();
 
 window.onkeydown = e => {
   switch(e.key) {
