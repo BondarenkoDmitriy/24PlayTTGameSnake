@@ -4,6 +4,7 @@ import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
 const width = 640;
 const height = 480;
+let points = 0;
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 
@@ -27,6 +28,8 @@ function genCube(x: number, y: number) {
   scene.add( cube );
   return cube;
 }
+
+// genCube(0, 0);
 
 class Snake {
   x: number; 
@@ -77,8 +80,26 @@ class Snake {
     this.moveChildren();
   }
 
+  checkCollisionWithChildren() {
+    for (let i = 0; i < this.children.length; i++) {
+      const current = this.children[i];
+
+      if (current.position.x === this.x && current.position.y === this.y) {
+        init()
+      }
+    }
+  }
+
   update() {
     this.move();
+    this.checkCollisionWithChildren();
+  }
+
+  grow() {
+    this.children.push(genCube(
+      this.lastPosition[1][0],
+      this.lastPosition[1][1],
+    ));
   }
 }
 
@@ -105,6 +126,8 @@ class Apple {
     if (this.x === snake.x && this.y === snake.y) {
       scene.remove(this.apple);
       apple = Apple.genRandomApple();
+      snake.grow();
+      points++;
     }
   }
 }
@@ -113,6 +136,7 @@ let apple: Apple;
 
 function init() {
   scene.clear()
+  points = 0;
   snake = new Snake(0, 0);
   apple = Apple.genRandomApple()
 }
@@ -130,6 +154,9 @@ update();
 
 function animate() {
 	requestAnimationFrame( animate );
+
+	// cube.rotation.x += 0.01;
+	// cube.rotation.y += 0.01;
 
   controls.update();
 
