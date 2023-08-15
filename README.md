@@ -8,7 +8,11 @@ In the game, the snake navigates around the screen, consuming food to gradually 
 <br>
 However, if the snake intersects with itself, the game restarts from the beginning.
 <br>
+Snake control with "arrows up" | "arrows down" | "arrows left" | "arrows right"
+<br>
 Button "0", returns the default value of the screen
+<br>
+Rotate the camera 360* by holding the "left mouse button" and rotating the mouse
 
 ## Installation
 
