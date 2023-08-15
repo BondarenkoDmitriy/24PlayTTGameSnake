@@ -7,6 +7,8 @@ This project showcases a classic Snake game implementation.
 In the game, the snake navigates around the screen, consuming food to gradually increase its size.
 <br>
 However, if the snake intersects with itself, the game restarts from the beginning.
+<br>
+Button "0", returns the default value of the screen
 
 ## Installation
 
